@@ -30,7 +30,6 @@ export const addComment = (req, res) => {
             moment(Date.now()).format("YYYY-MM-DD HH:mm:ss"),
             userInfo.id,
             req.body.postId
-
         ]
 
         db.query(q, [values], (err, data) => {
