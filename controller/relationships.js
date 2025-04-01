@@ -10,6 +10,27 @@ export const getRelationships = (req, res) => {
     })
 }
 
+export const getFriends = (req, res) => {
+    const token = req.cookies.accessToken;
+    jwt.verify(token, "secretkey", (err, userInfo) => {
+        if (err) return res.status(403).json("Token is invalid!!");
+        const q = `SELECT u.id, u.name, u.profilePic 
+                    FROM relationships AS r1
+                    JOIN relationships AS r2 
+                        ON r1.followedUserId = r2.followerUserId 
+                        AND r1.followerUserId = r2.followedUserId
+                    JOIN users AS u ON u.id = r1.followedUserId
+                    WHERE r1.followerUserId = ?`;
+
+        db.query(q, [userInfo.id], (err, data) => {
+            if (err) return res.status(500).json(err);
+            return res.status(200).json(data);
+        })
+    })
+
+
+}
+
 export const addRelationship = (req, res) => {
     const token = req.cookies.accessToken;
     if (!token) return res.status(401).json("Not logged in!!");
