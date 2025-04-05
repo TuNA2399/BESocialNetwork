@@ -9,6 +9,7 @@ import relationshipRoutes from "./routes/relationships.js"
 import cors from "cors";
 import multer from "multer";
 import cookieParser from "cookie-parser";
+import { startStoryCleanupCron } from "./cron/storiesCron.js";
 
 const app = express();
 
@@ -39,6 +40,10 @@ app.post("/api/upload", upload.single("file"), (req, res)=>{
     res.status(200).json(file.filename);
 })
 
+//Cronjob
+startStoryCleanupCron();
+
+//API
 app.use("/api/auth", authRoutes);
 app.use("/api/users", userRoutes);
 app.use("/api/posts", postRoutes);

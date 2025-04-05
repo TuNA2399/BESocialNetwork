@@ -45,7 +45,3 @@ export const addStories = (req, res) => {
         })
     })
 }
-
-export const deleteStories = (req, res) => {
-
-}
