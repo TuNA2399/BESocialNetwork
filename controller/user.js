@@ -10,6 +10,18 @@ export const getUser = (req, res) => {
         return res.json(info);
     })
 }
+
+export const getUserByName = (req, res) => {
+    const searchName = req.query.name;
+
+    const q = "SELECT id, name, profilePic FROM users WHERE LOWER(name) LIKE LOWER(?)";
+
+    db.query(q, [`%${searchName}%`], (err, data) => {
+        if (err) return res.status(500).json(err);
+        return res.json(data);
+    });
+};
+
 export const updateUser = (req, res) => {
     const token = req.cookies.accessToken;
     if (!token) return res.status(401).json("Not logged in!!");
