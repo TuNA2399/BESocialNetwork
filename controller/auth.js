@@ -51,6 +51,10 @@ export const login = (req, res) => {
             maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days
         });
 
+        res.cookie("accessToken", accessToken, {
+            httpOnly: true,
+        })
+
         const { password, ...userInfo } = data[0];
 
         return res.status(200).json({
